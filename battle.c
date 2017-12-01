@@ -31,7 +31,7 @@
 #define FIGHTER 22
 
 // constantes
-#define MAX     200
+#define MAX     200 //JOOJ
 
 // frases pre-definidas
 #define REPETIDO "REPETIDO\n"
