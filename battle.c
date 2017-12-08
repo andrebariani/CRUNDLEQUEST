@@ -1,37 +1,17 @@
-/* ================================================================== *
-  Universidade Federal de Sao Carlos - UFSCar, Sorocaba
-
-  Disciplina: Algoritmos e Programação 2
-
-  Lista 05 - Exercício 01 - Lista de RA
-
-* ================================================================== *
-  Dados do aluno:
-
-  RA: 743506
-  Nome: Andre Matheus Bariani Trava
-
-* ================================================================== */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
 // menu de opcoes
-#define SAIR            0
-#define INSERIRHERO     1
-#define INSERIRENEMY    2
-#define REMOVER         3
-#define IMPRIMIR        4
-
-// classes
-
-#define MAGE    11
-#define FIGHTER 22
+#define SAIR 			0
+#define INSERIR_HERO	1
+#define INSERIR_ENEMY	2
+#define REMOVER			3
+#define IMPRIMIR		4
 
 // constantes
-#define MAX     200 //JOOJ
+#define MAX     201 //JOOJ
 
 // frases pre-definidas
 #define REPETIDO "REPETIDO\n"
@@ -40,29 +20,28 @@
 //REGISTROS
 typedef struct _node{
     struct _node *next;
-    struct _node *prev;
-    int hp, str, mag, def, res, spd, sts, class;
+    int hp, str, mag, def, res, spd, sts;	//sts 
     int turndefend;
     char nome[MAX];
 }actor;
 
 // PROTOTIPO DAS FUNCOES
-//
 // int battlestart( actor ** h, actor ** e, int hn, int en );
 // actor ** turnmaker( actor *headh, actor *heade );
-int Inserir( actor ** l, int HP, int STR, int MAG, int DEF, int RES, int SPD, int CLASS, int STS, char NOME[] );
-void InserirCampos( actor *p, int HP, int STR, int MAG, int DEF, int RES, int SPD, int CLASS, int STS, char NOME[] );
-int ProcurarRAnome( actor ** l, char NOME[] );         // imprime na tela os RAs de todos os alunos com o nome procurado, ou retorna 0 e imprime INEXISTENTE
-void Remover( actor ** l, char NOME[] );                  // remove da actora o aluno
-void Imprimir( actor** l );                        // exibe uma linha na tela com todos os RAs da lista
+int Inserir( actor ** l, int HP, int STR, int MAG, int DEF, int RES, int SPD, char NOME[] );
+void InserirCampos( actor *p, int HP, int STR, int MAG, int DEF, int RES, int SPD, char NOME[] );
+int Procurar_nome( actor ** l, char NOME[] );
+int Remover( actor ** l, char NOME[] );
+void Imprimir( actor** l );
+void libera_lista( actor **primeiro );
 
 // ROTINA PRINCIPAL
 
 int main() {
-    actor *h = NULL;
-    actor *e = NULL;
+    actor *hero = NULL;
+    actor *enemy = NULL;
 
-    int HP, STR, MAG, DEF, RES, SPD, CLASS, type, hn = 0, en = 0;
+    int HP, STR, MAG, DEF, RES, SPD, type, hero_number = 0, enemy_number = 0;
     char NAME[MAX];
 
     int opt = 1;
@@ -70,34 +49,52 @@ int main() {
        scanf("%d",&opt);
        switch(opt){
 
-          case INSERIRHERO:
+          case INSERIR_HERO:
+            printf("Insira os seguintes dados:\n");
+			printf("HP:");
             scanf("%d", &HP);
+            printf("Força:");
             scanf("%d", &STR);
+            printf("Magia:");
             scanf("%d", &MAG);
+            printf("Defesa:");
             scanf("%d", &DEF);
+            printf("Resistencia:");
             scanf("%d", &RES);
+            printf("Velociadade:");
             scanf("%d", &SPD);
-            scanf("%d", &type );
-            scanf("\n%400[^\n]", NAME);
-            if( Inserir( &h, HP, STR, MAG, DEF, RES, SPD, CLASS, type, NAME ) ) {
-                hn++;
+            getchar();
+            printf("Nome do Héroi:");
+            scanf("%[^\n]", NAME);
+            if( Inserir( &hero, HP, STR, MAG, DEF, RES, SPD, NAME ) ) {
+                printf("Héroi inserido com susesso!\n");
+                hero_number++;
             }
             else{
                 printf(REPETIDO);
             }
           break;
 
-          case INSERIRENEMY:
+          case INSERIR_ENEMY:
+			printf("Insira os seguintes dados:\n");
+			printf("HP:");
             scanf("%d", &HP);
+            printf("Força:");
             scanf("%d", &STR);
+            printf("Magia:");
             scanf("%d", &MAG);
+            printf("Defesa:");
             scanf("%d", &DEF);
+            printf("Resistencia:");
             scanf("%d", &RES);
+            printf("Velociadade:");
             scanf("%d", &SPD);
-            scanf("%d", &type );
-            scanf("\n%400[^\n]", NAME);
-            if( Inserir( &e, HP, STR, MAG, DEF, RES, SPD, CLASS, type, NAME ) ) {
-                en++;
+            getchar();
+            printf("Nome do Inimigo:");
+            scanf("%[^\n]", NAME);
+            if( Inserir( &enemy, HP, STR, MAG, DEF, RES, SPD, NAME ) ) {
+                printf("Inimigo inserido com susesso!\n");
+                enemy_number++;
             }
             else{
                 printf(REPETIDO);
@@ -105,25 +102,195 @@ int main() {
             break;
 
           case REMOVER:
-            scanf("\n%400[^\n]", NAME);
-            scanf("%d\n", &type);
-            type ? Remover( &h, NAME ) : Remover( &e, NAME );
+			printf("De que lista você deseja remover?\n0 - Lista de Hérois\t1 - Lista de Inimigos\n");
+            scanf("%d", &type);
+            switch(type){
+				case 0:
+					printf("Insira o nome do Héroi a ser removido:\n");
+					scanf("\n%400[^\n]", NAME);
+					if( Remover( &hero, NAME ) )
+						printf("Héroi removido com sucesso\n");
+					else
+						printf("Nome do Héroi inserido não existe na lista\n");
+				break;
+					
+				case 1:
+					printf("Insira o nome do Inimigo a ser removido:\n");
+					scanf("\n%400[^\n]", NAME);
+					if( Remover( &enemy, NAME ) )
+						printf("Inimigo removido com sucesso\n");
+					else
+						printf("Nome do Inimigo inserido não existe na lista\n");
+				break;
+			}
           break;
 
           case IMPRIMIR:
-            scanf("%d\n", type);
-            type ? Imprimir( &h ) : Imprimir( &e );
+			printf("Que lista você deseja imprimir?\n0 - Lista de Hérois\t1 - Lista de Inimigos\n");
+            scanf("%d", &type);
+            if(type)
+				Imprimir(&enemy);
+			else
+				Imprimir(&hero);
           break;
 
        }
     }
-
+	libera_lista(&hero);
+	libera_lista(&enemy);
     printf("Party inserida!\n");
 
     // battlestart( &h, &e, hn, en ) ? printf("You Win!\n") : printf("You Lose!\n"); ;
 
     return 0;
 }
+
+
+//função que coloca os elementos no no da lista
+void InserirCampos( actor *p, int HP, int STR, int MAG, int DEF, int RES, int SPD, char NOME[] ) {
+    p->hp = HP;
+    p->str = STR;
+    p->mag = MAG;
+    p->def = DEF;
+    p->res = RES;
+    p->spd = SPD;
+    strcpy(p->nome, NOME);
+}
+
+// insere o elemento no fianl da lista, retorna:
+//	0 o elemento for repetido
+//	1 se o elemento for inserido com sucesso
+int Inserir( actor **l, int HP, int STR, int MAG, int DEF, int RES, int SPD, char NOME[] ) {
+
+    if( *l == NULL ) {
+        actor *p = (actor*)malloc(sizeof(actor));
+
+        InserirCampos( p, HP, STR, MAG, DEF, RES, SPD, NOME );
+
+        *l = p;
+        p->next = NULL;
+
+        return 1;
+    }
+    else {
+        actor *p = *l;
+
+        while ( 1 ) {
+            if ( strcmp(NOME, p->nome) == 0  )
+                return 0;
+
+            else if( p->next == NULL ){
+                actor *new = (actor*)malloc(sizeof(actor));
+
+                InserirCampos( new, HP, STR, MAG, DEF, RES, SPD, NOME );
+
+                p->next = new;
+                new->next = NULL;
+                return 1;
+            }
+            p = p->next;
+        }
+
+    }
+
+}
+
+// imprime na tela os RAs de todos os alunos com o nome procurado, ou imprime INEXISTENTE
+// Retorna 1 se encontrado, ou 0 se inexistente
+int Procurar_nome( actor ** l, char NOME[] ) {
+
+    if( *l == NULL )
+        return 0;
+
+    actor *p = *l;
+    int found = 0;
+
+    while( p != NULL ) {
+        if( strcmp(NOME, p->nome) == 0 ) {
+            found++;
+        }
+        p = p->next;
+    }
+
+    if(found == 0) {
+        return 0;
+    }
+
+    return 1;
+}
+
+//função que remove um elemento da lista com o nome listado, retorna:
+//	0 caso o elemento não existe
+//	1 caso o elemnto foi removido com sucesso
+int Remover( actor ** l, char NOME[] ) {
+	actor *anterior = *l;
+	
+	if( anterior == NULL )
+		return 0;
+	
+	if( strcmp(NOME, anterior->nome ) == 0 ){
+		free(anterior);
+		*l = NULL;
+		return 1;
+	}
+	
+	actor *atual = anterior->next;
+	
+	while(atual != NULL){
+		if( strcmp(NOME, atual->nome ) == 0){
+			anterior->next = atual->next;
+			free(atual);
+			return 1;
+		}
+		atual = atual->next;
+		anterior = anterior->next;
+	}
+	return 0;
+
+}
+
+//imprime os elementos da lista
+void Imprimir( actor** l ) {
+
+    if( *l == NULL )
+        return;
+
+    actor * p = *l;
+
+    while( p != NULL ) {
+        printf("||Name: %s\t\t||\n", p->nome);
+        printf("||HP:  %d\t\t||\n", p->hp);
+        printf("||STR: %d\t\t||\n", p->str);
+        printf("||MAG: %d\t\t||\n", p->mag);
+        printf("||DEF: %d\t\t||\n", p->def);
+        printf("||RES: %d\t\t||\n", p->res);
+        printf("||SPD: %d\t\t||\n\n", p->spd);
+
+        p = p->next;
+    }
+
+    printf("\n");
+}
+
+void libera_lista(actor **primeiro){//limpa a lista, deixando o espaço de memória que ela ocupava vazio
+	actor *anterior = *primeiro;
+	if(anterior == NULL){	//se a lista estiver vazia, a função nao faz nada
+	}else{
+		actor *atual = anterior->next;
+		if(atual == NULL){	//caso o valor atual seja o unico da lista, ele é liberando
+			free(anterior);
+		}else{
+			while (atual != NULL){		//enquando existir algum elemento da lista, o loop vai liberando um por um os nós da lista
+				free(anterior);
+				*primeiro = atual;
+				anterior = atual;
+				atual = anterior->next;
+			}
+			free(anterior);
+		}
+	}
+}
+
 //
 // actor ** turnmaker( actor * headh, actor * heade ) {
 //     actor *headt = NULL;
@@ -266,157 +433,3 @@ int main() {
 //         t = t->next;
 //     }
 // }
-
-// insere o aluno na posicao correta da actora, ou 0 se repetido
-void InserirCampos( actor * p, int HP, int STR, int MAG, int DEF, int RES, int SPD, int CLASS, int STS, char NOME[] ) {
-    p->hp = HP;
-    p->str = STR;
-    p->mag = MAG;
-    p->def = DEF;
-    p->res = RES;
-    p->spd = SPD;
-    p->class = CLASS;
-    p->sts = STS;
-
-    strcpy(p->nome, NOME);
-}
-
-int Inserir( actor ** l, int HP, int STR, int MAG, int DEF, int RES, int SPD, int CLASS, int STS, char NOME[] ) {
-
-    if( *l == NULL ) {
-        actor *p = (actor*)malloc(sizeof(actor));
-
-        InserirCampos( p, HP, STR, MAG, DEF, RES, SPD, CLASS, STS, NOME );
-
-        *l = p;
-        p->next = NULL;
-        p->prev = NULL;
-
-        return 1;
-    }
-    else {
-        actor *p = *l;
-        int first = 1;
-
-        while ( 1 ) {
-            if ( strcmp(NOME, p->nome) == 0  )
-                return 0;
-
-            if( p->spd < SPD ) {
-                actor *new = (actor*)malloc(sizeof(actor));
-                if ( first ) {
-
-                    InserirCampos( new, HP, STR, MAG, DEF, RES, SPD, CLASS, STS, NOME );
-                    *l = new;
-                    new->next = p;
-                    p->prev = new;
-                    new->prev = NULL;
-                    return 1;
-                }
-                InserirCampos( new, HP, STR, MAG, DEF, RES, SPD, CLASS, STS, NOME );
-                new->prev = p->prev;
-                p->prev->next = new;
-                p->prev = new;
-                new->next = p;
-                return 1;
-            }
-            else if( p->next == NULL ){
-                actor *new = (actor*)malloc(sizeof(actor));
-
-                InserirCampos( new, HP, STR, MAG, DEF, RES, SPD, CLASS, STS, NOME );
-
-                p->next = new;
-                new->prev = p;
-                new->next = NULL;
-                return 1;
-            }
-            p = p->next;
-            first = 0;
-        }
-
-    }
-
-}
-
-// imprime na tela os RAs de todos os alunos com o nome procurado, ou imprime INEXISTENTE
-// Retorna 1 se encontrado, ou 0 se inexistente
-int ProcurarRAnome( actor ** l, char NOME[] ) {
-
-    if( *l == NULL )
-        return 0;
-
-    actor *p = *l;
-    int found = 0;
-
-    while( p != NULL ) {
-        if( strcmp(NOME, p->nome) == 0 ) {
-            found++;
-        }
-        p = p->next;
-    }
-
-    if(found == 0) {
-        return 0;
-    }
-
-    printf("\n");
-
-    return 1;
-}
-
-void Remover( actor ** l, char NOME[] ) {
-
-    if(*l == NULL)
-        return;
-
-    actor *p = *l;
-    int first = 1;
-
-    while ( p != NULL ) {
-        if( strcmp(NOME, p->nome) == 0 ) {
-            if( first ) {
-                if( p->next == NULL && p->prev == NULL ) {         // Se for o unico item da actora
-                    free(p);
-                    *l = NULL;
-                    return;
-                }
-                *l = p->next;                                     // Se for o primeiro item da actora
-                free(p);
-                return;
-            }
-            if( p->next == NULL ) {                               // Se for o ultimo item da actora
-                p->prev->next = NULL;
-                free(p);
-                return;
-            }
-            p->prev->next = p->next;
-            free(p);
-            return;
-        }
-        p = p->next;
-        first = 0;
-    }
-
-}
-
-void Imprimir( actor** l ) {
-
-    if( *l == NULL )
-        return;
-
-    actor * p = *l;
-
-    while( p != NULL ) {
-        printf("||Name: %s\t\t||\n", p->nome);
-        printf("||HP:  %d\t\t||\n", p->hp);
-        printf("||STR: %d\t\t||\n", p->str);
-        printf("||MAG: %d\t\t||\n", p->mag);
-        printf("||DEF: %d\t\t||\n", p->def);
-        printf("||RES: %d\t\t||\n", p->res);
-        printf("||SPD: %d\t\t||\n\n", p->spd);
-
-        p = p->next;
-    }
-
-    printf("\n");
-}
