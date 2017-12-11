@@ -7,8 +7,9 @@
 #define SAIR 			0
 #define INSERIR_HERO	1
 #define INSERIR_ENEMY	2
-#define REMOVER			3
-#define IMPRIMIR		4
+#define PROCURAR		3
+#define REMOVER			4
+#define IMPRIMIR		5
 
 // constantes
 #define MAX     201 //JOOJ
@@ -30,7 +31,7 @@ typedef struct _node{
 // actor ** turnmaker( actor *headh, actor *heade );
 int Inserir( actor ** l, int HP, int STR, int MAG, int DEF, int RES, int SPD, char NOME[] );
 void InserirCampos( actor *p, int HP, int STR, int MAG, int DEF, int RES, int SPD, char NOME[] );
-int Procurar_nome( actor ** l, char NOME[] );
+actor *Procurar_pelo_nome( actor ** l, char NOME[] );
 int Remover( actor ** l, char NOME[] );
 void Imprimir( actor** l );
 void libera_lista( actor **primeiro );
@@ -40,13 +41,14 @@ void libera_lista( actor **primeiro );
 int main() {
     actor *hero = NULL;
     actor *enemy = NULL;
+	actor *escolhido;
 
     int HP, STR, MAG, DEF, RES, SPD, type, hero_number = 0, enemy_number = 0;
     char NAME[MAX];
 
     int opt = 1;
     while(opt != 0) {
-       scanf("%d",&opt);
+		scanf("%d",&opt);
        switch(opt){
 
           case INSERIR_HERO:
@@ -100,12 +102,52 @@ int main() {
                 printf(REPETIDO);
             }
             break;
+            
+          case PROCURAR:
+			printf("De que lista você deseja procurar?\n1 - Lista de Hérois\t2 - Lista de Inimigos\n");
+            scanf("%d", &type);
+            switch( type ){
+				case 1:
+					printf("Insira o nome do Héroi procrurado:\n");
+					scanf("\n%400[^\n]", NAME);
+					escolhido = Procurar_pelo_nome(&hero, NAME);
+					if( escolhido != NULL){
+							printf("||Name: %s\t\t||\n", escolhido->nome);
+							printf("||HP:  %d\t\t||\n", escolhido->hp);
+							printf("||STR: %d\t\t||\n", escolhido->str);
+							printf("||MAG: %d\t\t||\n", escolhido->mag);
+							printf("||DEF: %d\t\t||\n", escolhido->def);
+							printf("||RES: %d\t\t||\n", escolhido->res);
+							printf("||SPD: %d\t\t||\n\n", escolhido->spd);
+					}else{
+						printf("Héroi procurado não encontrado.\n");
+					}
+					break;
+				
+				case 2:
+					printf("Insira o nome do Inimigo procrurado:\n");
+					scanf("\n%400[^\n]", NAME);
+					escolhido = Procurar_pelo_nome(&hero, NAME);
+					if( escolhido != NULL){
+							printf("||Name: %s\t\t||\n", escolhido->nome);
+							printf("||HP:  %d\t\t||\n", escolhido->hp);
+							printf("||STR: %d\t\t||\n", escolhido->str);
+							printf("||MAG: %d\t\t||\n", escolhido->mag);
+							printf("||DEF: %d\t\t||\n", escolhido->def);
+							printf("||RES: %d\t\t||\n", escolhido->res);
+							printf("||SPD: %d\t\t||\n\n", escolhido->spd);
+					}else{
+						printf("Inimigo procurado não encontrado.\n");
+					}
+					break;
+			}
+		  break;
 
           case REMOVER:
-			printf("De que lista você deseja remover?\n0 - Lista de Hérois\t1 - Lista de Inimigos\n");
+			printf("De que lista você deseja remover?\n1 - Lista de Hérois\t2 - Lista de Inimigos\n");
             scanf("%d", &type);
-            switch(type){
-				case 0:
+            switch( type ){
+				case 1:
 					printf("Insira o nome do Héroi a ser removido:\n");
 					scanf("\n%400[^\n]", NAME);
 					if( Remover( &hero, NAME ) )
@@ -114,7 +156,7 @@ int main() {
 						printf("Nome do Héroi inserido não existe na lista\n");
 				break;
 					
-				case 1:
+				case 2:
 					printf("Insira o nome do Inimigo a ser removido:\n");
 					scanf("\n%400[^\n]", NAME);
 					if( Remover( &enemy, NAME ) )
@@ -196,27 +238,22 @@ int Inserir( actor **l, int HP, int STR, int MAG, int DEF, int RES, int SPD, cha
 }
 
 // imprime na tela os RAs de todos os alunos com o nome procurado, ou imprime INEXISTENTE
-// Retorna 1 se encontrado, ou 0 se inexistente
-int Procurar_nome( actor ** l, char NOME[] ) {
+// Retorna o ponteriro do nome procurado se encontrado, ou NULL se inexistente ou não encontrado,
+actor *Procurar_pelo_nome( actor ** l, char NOME[] ) {
 
     if( *l == NULL )
-        return 0;
+        return NULL;
 
     actor *p = *l;
-    int found = 0;
-
+    
     while( p != NULL ) {
         if( strcmp(NOME, p->nome) == 0 ) {
-            found++;
+            return p;
         }
         p = p->next;
     }
 
-    if(found == 0) {
-        return 0;
-    }
-
-    return 1;
+    return NULL;
 }
 
 //função que remove um elemento da lista com o nome listado, retorna:
