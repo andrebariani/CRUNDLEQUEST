@@ -22,7 +22,7 @@
 typedef struct _node{
     struct _node *next;
     int hp, str, mag, def, res, spd, sts;	//sts 
-    int turndefend;
+    int turndefend = 0;
     char nome[MAX];
 }actor;
 
@@ -35,6 +35,8 @@ actor *Procurar_pelo_nome( actor ** l, char NOME[] );
 int Remover( actor ** l, char NOME[] );
 void Imprimir( actor** l );
 void libera_lista( actor **primeiro );
+actor *turn_maker ( actor **hero, actor **enemy );
+actor *listade_batalha (actor **lista );
 
 // ROTINA PRINCIPAL
 
@@ -286,6 +288,20 @@ int Remover( actor ** l, char NOME[] ) {
 
 }
 
+actor *listade_batalha ( actor **l, char NOME[] ){
+	actor *p = *l;
+	while( p != NULL ){
+		if( strcmp(NOME, atual->nome ) == 0 ){
+			return 
+		}
+		p = p->next;
+	}
+}
+
+actor *turn_maker ( actor **hero, actor **enemy ){
+	
+}
+
 //imprime os elementos da lista
 void Imprimir( actor** l ) {
 
@@ -328,7 +344,7 @@ void libera_lista(actor **primeiro){//limpa a lista, deixando o espaço de memó
 	}
 }
 
-//
+
 // actor ** turnmaker( actor * headh, actor * heade ) {
 //     actor *headt = NULL;
 //     actor *h = headh;
