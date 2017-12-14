@@ -23,7 +23,7 @@
 // Constantes
 // ----------------------------------------------------------
 
-#define MAX     201 //JOOJ
+#define MAX     201
 
 // ----------------------------------------------------------
 // Frases Pre-definidas
@@ -67,6 +67,7 @@ int main() {
     LISTA_LIGADA enemy;
     ACTOR actor;
 	_node *escolhido = NULL;
+    int hero_number = 0, enemy_number = 0, type;
 
     // Inicializa as listas
     hero.inicio = NULL;
@@ -74,15 +75,55 @@ int main() {
     // ------------------------------------------------------
 
     // Arquivos
-    // FILE *heroarq;
-    // FILE *enemyarq;
-    //
-    // heroarq = fopen("herobd.dat", "");
-    // enemy = fopen("enemybd.dat", "");
+    FILE *heroarq;
+    FILE *enemyarq;
+    printf("JooJ\n" );
+    heroarq = fopen("herobd.dat", "rb");
+    enemyarq = fopen("enemybd.dat", "rb");
 
+    int arqsize;
+
+    if( heroarq != NULL ) {
+        printf("JooJ\n" );
+        fread( &arqsize , sizeof(int), 1, heroarq );
+        printf("JooJ\n" );
+
+        fseek( heroarq, sizeof(arqsize), SEEK_CUR );
+
+        hero_number = arqsize;
+
+        while( arqsize ) {
+            fread( &actor, sizeof(ACTOR), 1, heroarq );
+
+            fseek( heroarq, sizeof(ACTOR), SEEK_CUR );
+
+            Inserir( &hero , &actor );
+            arqsize--;
+        }
+    }
+    if( enemyarq != NULL ) {
+
+        fread( &arqsize, sizeof(int), 1, enemyarq );
+
+        fseek( enemyarq, sizeof(arqsize), SEEK_CUR );
+
+        enemy_number = arqsize;
+
+        while( arqsize ) {
+            fread( &actor, sizeof(ACTOR), 1, enemyarq );
+
+            fseek( enemyarq, sizeof(ACTOR), SEEK_CUR );
+
+            Inserir( &enemy , &actor );
+            arqsize--;
+        }
+    }
     // ------------------------------------------------------
 
-    int hero_number = 0, enemy_number = 0, type;
+
+    printf("hero number: %d\n", hero_number );
+    printf("enemy number: %d\n", enemy_number );
+
 
     int opt = 1;
     while(opt != 0) {
@@ -90,6 +131,7 @@ int main() {
        switch(opt){
 
           case INSERIR_HERO:
+            actor.turndefend = 0;
             printf("Insira os seguintes dados:\n");
 			printf("HP:");
             scanf("%d", &actor.hp);
@@ -116,6 +158,7 @@ int main() {
           break;
 
           case INSERIR_ENEMY:
+            actor.turndefend = 0;
             printf("Insira os seguintes dados:\n");
             printf("HP:");
             scanf("%d", &actor.hp);
@@ -176,18 +219,22 @@ int main() {
 				case 1:
 					printf("Insira o nome do Héroi a ser removido:\n");
 					scanf("\n%400[^\n]", actor.nome);
-					if( Remover( &hero, &actor ) )
+					if( Remover( &hero, &actor ) ) {
 						printf("Héroi removido com sucesso\n");
-					else
+                        hero_number--;
+                    }
+                    else
 						printf("Nome do Héroi inserido não existe na lista\n");
 				break;
 
 				case 2:
 					printf("Insira o nome do Inimigo a ser removido:\n");
 					scanf("\n%400[^\n]", actor.nome);
-					if( Remover( &enemy, &actor ) )
-						printf("Inimigo removido com sucesso\n");
-					else
+					if( Remover( &enemy, &actor ) ) {
+                        enemy_number--;
+                    	printf("Inimigo removido com sucesso\n");
+                    }
+                    else
 						printf("Nome do Inimigo inserido não existe na lista\n");
 				break;
 			}
@@ -204,12 +251,56 @@ int main() {
 
        }
     }
-	LiberarLista(&hero);
-	LiberarLista(&enemy);
-    printf("Party inserida!\n");
+
+    printf("hero number: %d\n", hero_number );
+    printf("enemy number: %d\n", enemy_number );
+
+    // Arquivos
+    heroarq = fopen("herobd.dat", "wb");
+    enemyarq = fopen("enemybd.dat", "wb");
+
+    fwrite( &hero_number , sizeof(int) , 1 , heroarq );
+
+    fseek( heroarq, sizeof(hero_number), SEEK_CUR );
+
+    _node *paux = hero.inicio;
+
+    if( heroarq != NULL ) {
+        while ( paux != NULL ) {
+            fwrite( &(paux->actor) , sizeof(ACTOR) , 1 , heroarq );
+
+            fseek( heroarq, sizeof(ACTOR), SEEK_CUR );
+
+            paux = paux->next;
+        }
+    }
+
+    fwrite( &enemy_number , sizeof(int) , 1 , enemyarq );
+
+    fseek( enemyarq, sizeof(enemy_number), SEEK_CUR );
+
+    paux = enemy.inicio;
+    if( enemyarq != NULL ) {
+        while ( paux != NULL ) {
+            fwrite( &(paux->actor) , sizeof(ACTOR) , 1, enemyarq );
+
+            fseek( enemyarq, sizeof(ACTOR), SEEK_CUR );
+
+            paux = paux->next;
+        }
+    }
+
+    // ------------------------------------------------------
+
 
     // battlestart( &h, &e, hn, en ) ? printf("You Win!\n") : printf("You Lose!\n"); ;
 
+    LiberarLista(&hero);
+	LiberarLista(&enemy);
+    fclose(heroarq);
+    fclose(enemyarq);
+
+    printf("Party inserida!\n");
     return 0;
 }
 
