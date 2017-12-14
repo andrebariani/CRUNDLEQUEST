@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "lista.h"
 
@@ -42,7 +43,7 @@ int Inserir( LISTA_LIGADA *l, ACTOR *actor ) {
 
 // imprime na tela os RAs de todos os alunos com o nome procurado, ou imprime INEXISTENTE
 // Retorna o ponteriro do nome procurado se encontrado, ou NULL se inexistente ou não encontrado,
-_node *Procurar_pelo_nome( LISTA_LIGADA *l, ACTOR *actor ) {
+_node *Procurar( LISTA_LIGADA *l, ACTOR *actor ) {
 
     if( l->inicio == NULL )
         return NULL;
@@ -100,7 +101,7 @@ int Remover( LISTA_LIGADA *l, ACTOR *actor ) {
     return 0;
 }
 
-void libera_lista( LISTA_LIGADA *primeiro){//limpa a lista, deixando o espaço de memória que ela ocupava vazio
+void LiberarLista( LISTA_LIGADA *primeiro){//limpa a lista, deixando o espaço de memória que ela ocupava vazio
     _node *anterior = primeiro->inicio;
     if(anterior == NULL){	//se a lista estiver vazia, a função nao faz nada
     }else{

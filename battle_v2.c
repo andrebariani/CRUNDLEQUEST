@@ -3,9 +3,14 @@
 #include <string.h>
 #include <time.h>
 
+// ----------------------------------------------------------
+// Bibliotecas internas
+// ----------------------------------------------------------
 #include "lista.h"
 
-// menu de opcoes
+// ----------------------------------------------------------
+// Opcoes do Menu
+// ----------------------------------------------------------
 #define SAIR 			0
 #define INSERIR_HERO	1
 #define INSERIR_ENEMY	2
@@ -13,37 +18,50 @@
 #define REMOVER			4
 #define IMPRIMIR		5
 
-// constantes
+
+// ----------------------------------------------------------
+// Constantes
+// ----------------------------------------------------------
+
 #define MAX     201 //JOOJ
 
-// frases pre-definidas
+// ----------------------------------------------------------
+// Frases Pre-definidas
+// ----------------------------------------------------------
+
 #define REPETIDO "REPETIDO\n"
 #define INEXISTENTE "INEXISTENTE\n"
 
-//REGISTROS
+// ----------------------------------------------------------
+// REGISTROS
+// ----------------------------------------------------------
 
-typedef struct {
-    int hp, str, mag, def, res, spd, sts;
-    int turndefend;
-    char nome[MAX];
-} ACTOR;
+// typedef struct {
+//     int hp, str, mag, def, res, spd, sts;
+//     int turndefend;
+//     char nome[MAX];
+// } ACTOR;
+//
+// typedef struct _node{
+//     struct _node *next;
+//     ACTOR actor;
+// }_node;
+//
+// typedef struct {
+//     _node *inicio;
+// } LISTA_LIGADA;
 
-typedef struct _node{
-    struct _node *next;
-    ACTOR actor;
-}_node;
-
-typedef struct {
-    _node *inicio;
-} LISTA_LIGADA;
-
-// PROTOTIPO DAS FUNCOES
+// ----------------------------------------------------------
+// Prototipo das funcoes
+// ----------------------------------------------------------
 // int battlestart( actor ** h, actor ** e, int hn, int en );
 // actor ** turnmaker( actor *headh, actor *heade );
 void Imprimir( LISTA_LIGADA *l );
+void ImprimirElemento( _node *escolhido );
 
-// ROTINA PRINCIPAL
-
+// ----------------------------------------------------------
+// Rotina Principal
+// ----------------------------------------------------------
 int main() {
     LISTA_LIGADA hero;
     LISTA_LIGADA enemy;
@@ -53,11 +71,16 @@ int main() {
     // Inicializa as listas
     hero.inicio = NULL;
     enemy.inicio = NULL;
-    //
+    // ------------------------------------------------------
 
     // Arquivos
-
+    // FILE *heroarq;
+    // FILE *enemyarq;
     //
+    // heroarq = fopen("herobd.dat", "");
+    // enemy = fopen("enemybd.dat", "");
+
+    // ------------------------------------------------------
 
     int hero_number = 0, enemy_number = 0, type;
 
@@ -125,15 +148,9 @@ int main() {
 				case 1:
 					printf("Insira o nome do Héroi procrurado:\n");
 					scanf("\n%400[^\n]", actor.nome);
-					escolhido = Procurar_pelo_nome(&hero, &actor);
+					escolhido = Procurar(&hero, &actor);
 					if( escolhido != NULL){
-							printf("||Name: %s\t\t||\n", escolhido->actor.nome);
-							printf("||HP:  %d\t\t||\n", escolhido->actor.hp);
-							printf("||STR: %d\t\t||\n", escolhido->actor.str);
-							printf("||MAG: %d\t\t||\n", escolhido->actor.mag);
-							printf("||DEF: %d\t\t||\n", escolhido->actor.def);
-							printf("||RES: %d\t\t||\n", escolhido->actor.res);
-							printf("||SPD: %d\t\t||\n\n", escolhido->actor.spd);
+						ImprimirElemento( escolhido );
 					}else{
 						printf("Héroi procurado não encontrado.\n");
 					}
@@ -142,15 +159,9 @@ int main() {
 				case 2:
 					printf("Insira o nome do Inimigo procrurado:\n");
 					scanf("\n%400[^\n]", actor.nome);
-					escolhido = Procurar_pelo_nome(&enemy, &actor);
+					escolhido = Procurar(&enemy, &actor);
 					if( escolhido != NULL){
-							printf("||Name: %s\t\t||\n", escolhido->actor.nome);
-							printf("||HP:  %d\t\t||\n", escolhido->actor.hp);
-							printf("||STR: %d\t\t||\n", escolhido->actor.str);
-							printf("||MAG: %d\t\t||\n", escolhido->actor.mag);
-							printf("||DEF: %d\t\t||\n", escolhido->actor.def);
-							printf("||RES: %d\t\t||\n", escolhido->actor.res);
-							printf("||SPD: %d\t\t||\n\n", escolhido->actor.spd);
+                        ImprimirElemento( escolhido );
 					}else{
 						printf("Inimigo procurado não encontrado.\n");
 					}
@@ -193,8 +204,8 @@ int main() {
 
        }
     }
-	libera_lista(&hero);
-	libera_lista(&enemy);
+	LiberarLista(&hero);
+	LiberarLista(&enemy);
     printf("Party inserida!\n");
 
     // battlestart( &h, &e, hn, en ) ? printf("You Win!\n") : printf("You Lose!\n"); ;
@@ -202,8 +213,10 @@ int main() {
     return 0;
 }
 
-//imprime os elementos da lista
-// void Imprimir( actor** l ) {
+// ----------------------------------------------------------
+// Funcao Imprimir: Imprime lista inteira
+// ----------------------------------------------------------
+
 void Imprimir( LISTA_LIGADA *l ) {
 
     if( l->inicio == NULL )
@@ -226,6 +239,21 @@ void Imprimir( LISTA_LIGADA *l ) {
     printf("\n");
 }
 
+void ImprimirElemento(  _node *escolhido  ) {
+
+    if( escolhido == NULL )
+        return;
+
+    printf("||Name: %s\t\t||\n", escolhido->actor.nome);
+    printf("||HP:  %d\t\t||\n", escolhido->actor.hp);
+    printf("||STR: %d\t\t||\n", escolhido->actor.str);
+    printf("||MAG: %d\t\t||\n", escolhido->actor.mag);
+    printf("||DEF: %d\t\t||\n", escolhido->actor.def);
+    printf("||RES: %d\t\t||\n", escolhido->actor.res);
+    printf("||SPD: %d\t\t||\n\n", escolhido->actor.spd);
+
+    printf("\n");
+}
 
 //
 // actor ** turnmaker( actor * headh, actor * heade ) {

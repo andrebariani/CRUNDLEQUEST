@@ -19,8 +19,8 @@ typedef struct {
 } LISTA_LIGADA;
 
 int Inserir( LISTA_LIGADA *l, ACTOR *actor );
-_node *Procurar_pelo_nome( LISTA_LIGADA *l, ACTOR *actor );
+_node *Procurar( LISTA_LIGADA *l, ACTOR *actor );
 int Remover( LISTA_LIGADA *l, ACTOR *actor );
-void libera_lista( LISTA_LIGADA *primeiro );
+void LiberarLista( LISTA_LIGADA *primeiro );
 
 #endif
