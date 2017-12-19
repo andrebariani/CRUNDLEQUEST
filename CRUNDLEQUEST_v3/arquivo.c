@@ -46,38 +46,10 @@ void ExportarArquivo( FILE *arq, LISTA_LIGADA *l, int n ) {
     if( arq != NULL ) {
         while ( paux != NULL ) {
             fwrite( &(paux->actor) , sizeof(ACTOR) , 1 , arq );
-
+            
             fseek( arq, sizeof(ACTOR), SEEK_CUR );
 
             paux = paux->next;
         }
-    }
-}
-
-_node *ImportarCSV( FILE *arq , int *n ) {
-    ACTOR actor;
-    LISTA_LIGADA hero;
-
-    hero.inicio = NULL;
-
-    *n = 0;
-    int naux = 0;
-
-    while( fscanf( arq, "%[^,],%d,%d,%d,%d,%d,%d\n", actor.nome, &actor.hp, &actor.str, &actor.mag, &actor.def, &actor.res, &actor.spd) != EOF ) {
-        Inserir( &hero, &actor );
-        naux++;
-    }
-
-    *n = naux;
-    return hero.inicio;
-}
-
-void ExportarCSV( FILE *arq , LISTA_LIGADA *l ) {
-
-    _node *parq = l->inicio;
-
-    while(parq != NULL) {
-        fprintf( arq, "%s,%d,%d,%d,%d,%d,%d\n", parq->actor.nome, parq->actor.hp, parq->actor.str, parq->actor.mag, parq->actor.def, parq->actor.res, parq->actor.spd);
-        parq = parq->next;
     }
 }

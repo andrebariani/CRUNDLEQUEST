@@ -18,7 +18,8 @@
 #define PROCURAR		3
 #define REMOVER			4
 #define IMPRIMIR		5
-
+#define IMPORTARCSV     6
+#define EXPORTARCSV     7
 
 // ----------------------------------------------------------
 // Constantes
@@ -214,6 +215,102 @@ int main() {
 				Imprimir(&hero);
           break;
 
+          case IMPORTARCSV:
+            printf("Importar para qual lista?\n0 - Lista de Hérois\t1 - Lista de Inimigos\n");
+            scanf("%d", &type);
+            switch(type) {
+                case 0:
+                    printf("Importar arquivo CSV vai excluir os dados atuais. Continuar?\t1 - SIM\t 0 - NAO\n");
+                    scanf("%d", &type);
+                    if(type) {
+                        char nomearq[MAX];
+
+                        printf("Insira nome do arquivo .csv (INSIRA NO FINAL .csv)\n");
+                        getchar();
+                        scanf("%400[^\n]", nomearq);
+
+                        FILE *imparq;
+
+                        imparq = fopen( nomearq, "r" );
+
+                        if(imparq == NULL) {
+                            printf("Arquivo nao encontrado!\n");
+                            break;
+                        }
+
+                        LiberarLista( &hero );
+
+                        hero.inicio = ImportarCSV( imparq , &hero_number );
+
+                        fclose( imparq );
+                        printf("%d herois adicionados!\n", hero_number);
+                    }
+                break;
+
+                case 1:
+                    printf("Importar arquivo CSV vai excluir os dados atuais. Continuar?\t1 - SIM\t 0 - NAO\n");
+                    scanf("%d", &type);
+                    if(type) {
+                        char nomearq[MAX];
+
+                        printf("Insira nome do arquivo .csv (INSIRA NO FINAL .csv)\n");
+                        getchar();
+                        scanf("%400[^\n]", nomearq);
+
+                        FILE *imparq;
+
+                        imparq = fopen( nomearq, "r" );
+
+                        if(imparq == NULL) {
+                            printf("Arquivo nao encontrado!\n");
+                            break;
+                        }
+
+                        LiberarLista( &enemy );
+
+                        enemy.inicio = ImportarCSV( imparq , &enemy_number );
+
+                        fclose( imparq );
+                        printf("%d inimigos adicionados!\n", enemy_number);
+                    }
+                break;
+            }
+          break;
+
+          case EXPORTARCSV:
+            printf("Exportar para qual lista?\n0 - Lista de Hérois\t1 - Lista de Inimigos\n");
+
+            char nomearq[MAX];
+            FILE *exparq;
+
+            scanf("%d", &type);
+            switch( type ) {
+                case 0:
+                    printf("Insira nome para o arquivo .csv (INSIRA NO FINAL .csv)\n");
+                    getchar();
+                    scanf("%400[^\n]", nomearq);
+
+                    exparq = fopen(nomearq, "w");
+
+                    ExportarCSV( exparq , &hero );
+
+                    fclose(exparq);
+                break;
+
+                case 1:
+                    printf("Insira nome para o arquivo .csv (INSIRA NO FINAL .csv)\n");
+                    getchar();
+                    scanf("%400[^\n]", nomearq);
+
+                    exparq = fopen(nomearq, "w");
+
+                    ExportarCSV( exparq , &enemy );
+
+                    fclose(exparq);
+                break;
+
+            }
+          break;
        }
     }
 
