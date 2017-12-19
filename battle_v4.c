@@ -76,7 +76,7 @@ int main() {
     enemy.inicio = NULL;
     // ------------------------------------------------------
 
-    // Arquivos
+    // Verificando Arquivos
     FILE *heroarq;
     FILE *enemyarq;
 
@@ -317,7 +317,7 @@ int main() {
     printf("hero number: %d\n", hero_number );
     printf("enemy number: %d\n", enemy_number );
 
-    // Arquivos
+    // Encerrando Arquivos
     heroarq = fopen("herobd.dat", "wb");
     enemyarq = fopen("enemybd.dat", "wb");
 
@@ -362,6 +362,10 @@ void Imprimir( LISTA_LIGADA *l ) {
 
     printf("\n");
 }
+
+// ----------------------------------------------------------
+// Funcao ImprimirElemento: Imprime um unico elemento da lista
+// ----------------------------------------------------------
 
 void ImprimirElemento(  _node *escolhido  ) {
 

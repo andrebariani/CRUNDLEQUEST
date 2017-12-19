@@ -6,8 +6,13 @@
 #include "lista.h"
 
 // ----------------------------------------------------------
-//  Funcao Importar Arquivo: Importa dados binarios do Arquivo
-//                           e retorna em uma lista
+// Funcao ImportarArquivo:  Importa dados de arquivo binario
+//             Parametros:  endereco do arquivo, endereco da lista, endereco para
+//                          numero de elementos da lista.
+//                Retorno:  endereco para primeiro elemento da nova lista;
+//                          NULL em caso de arquivo vazio ou nenhum elemento no arquivo.
+//
+// Observacao: arqsize representa o numero de elemento no arquivo
 // ----------------------------------------------------------
 _node *ImportarArquivo( FILE *arq, LISTA_LIGADA *l, int *n) {
     ACTOR actor;
@@ -23,7 +28,6 @@ _node *ImportarArquivo( FILE *arq, LISTA_LIGADA *l, int *n) {
         while( arqsize ) {
             fread( &(actor), sizeof(ACTOR), 1, arq );
             fseek( arq, sizeof(ACTOR), SEEK_CUR );
-// printf("JooJ\n");
             Inserir( l , &actor );
             arqsize--;
         }
@@ -32,8 +36,9 @@ _node *ImportarArquivo( FILE *arq, LISTA_LIGADA *l, int *n) {
     return NULL;
 }
 // ----------------------------------------------------------
-//  Funcao Exportar Arquivo: Exporta dados para arquivo
-//                           binario
+//  Funcao ExportarArquivo: Exporta dados para arquivo binario
+//             Parametros:  endereco para arquivo, endereco para lista, numero de
+//                          elementos da lista.
 // ----------------------------------------------------------
 void ExportarArquivo( FILE *arq, LISTA_LIGADA *l, int n ) {
 
@@ -53,7 +58,13 @@ void ExportarArquivo( FILE *arq, LISTA_LIGADA *l, int n ) {
         }
     }
 }
-
+// ----------------------------------------------------------
+// Funcao ImportarArquivo:  Importa dados de um arquivo .csv
+//             Parametros:  endereco para arquivo, endereco para numero
+//                          de elementos da lista.
+//                Retorno:  endereco para primeiro elemento da nova lista;
+//                          NULL em caso de lista vazia.
+// ----------------------------------------------------------
 _node *ImportarCSV( FILE *arq , int *n ) {
     ACTOR actor;
     LISTA_LIGADA hero;
@@ -71,7 +82,10 @@ _node *ImportarCSV( FILE *arq , int *n ) {
     *n = naux;
     return hero.inicio;
 }
-
+// ----------------------------------------------------------
+// Funcao ImportarArquivo:  Exporta dados para um arquivo .csv
+//             Parametros:  endereco para arquivo, endereco para lista.
+// ----------------------------------------------------------
 void ExportarCSV( FILE *arq , LISTA_LIGADA *l ) {
 
     _node *parq = l->inicio;

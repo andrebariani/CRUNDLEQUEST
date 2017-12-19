@@ -4,10 +4,12 @@
 
 #include "lista.h"
 
-// insere o elemento no fianl da lista, retorna:
-//	0 o elemento for repetido
-//	1 se o elemento for inserido com sucesso
-// int Inserir( actor **l, int HP, int STR, int MAG, int DEF, int RES, int SPD, char NOME[] ) {
+// ----------------------------------------------------------
+// Funcao Inserir:  Insere elemento na lista.
+//     Parametros:  endereco para lista, endereco para elemento.
+//        Retorno:  1 em caso de insercao feita;
+//                  0 em caso de elemento repetido.
+// ----------------------------------------------------------
 int Inserir( LISTA_LIGADA *l, ACTOR *actor ) {
 
     if( l->inicio == NULL ) {
@@ -41,8 +43,12 @@ int Inserir( LISTA_LIGADA *l, ACTOR *actor ) {
     }
 }
 
-// imprime na tela os RAs de todos os alunos com o nome procurado, ou imprime INEXISTENTE
-// Retorna o ponteriro do nome procurado se encontrado, ou NULL se inexistente ou não encontrado,
+// ----------------------------------------------------------
+// Funcao Procurar: Procura elemento pelo nome.
+//      Parametros: endereco para lista, endereco para elemento.
+//         Retorno: endereco para o elemento encontrado;
+//                  NULL em caso de elemento nao encontrado.
+// ----------------------------------------------------------
 _node *Procurar( LISTA_LIGADA *l, ACTOR *actor ) {
 
     if( l->inicio == NULL )
@@ -60,10 +66,12 @@ _node *Procurar( LISTA_LIGADA *l, ACTOR *actor ) {
     return NULL;
 }
 
-//função que remove um elemento da lista com o nome listado, retorna:
-//	0 caso o elemento não existe
-//	1 caso o elemnto foi removido com sucesso
-// int Remover( actor ** l, char NOME[] ) {
+// ----------------------------------------------------------
+// Funcao Remover:  Remove elemento com o nome indicado da lista.
+//     Parametros:  endereco para lista, endereco para elemento.
+//        Retorno:  1 em caso de remocao feita;
+//                  0 em caso de elemento nao encontrado ou lista vazia.
+// ----------------------------------------------------------
 int Remover( LISTA_LIGADA *l, ACTOR *actor ) {
 
     if(l->inicio == NULL)
@@ -101,6 +109,10 @@ int Remover( LISTA_LIGADA *l, ACTOR *actor ) {
     return 0;
 }
 
+// ----------------------------------------------------------
+// Funcao LiberarLista: limpa a lista, deixando o espaço de memoria que ela ocupava vazio
+//          Parametros: endereco para lista
+// ----------------------------------------------------------
 void LiberarLista( LISTA_LIGADA *primeiro){//limpa a lista, deixando o espaço de memória que ela ocupava vazio
     primeiro->inicio = NULL;
 }
