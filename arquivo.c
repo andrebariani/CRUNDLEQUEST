@@ -6,8 +6,8 @@
 #include "lista.h"
 
 // ----------------------------------------------------------
-//  Funcao Importar Arquivo: Importa dados binarios do Arquivo
-//                           e retorna em uma lista
+//  Funcao Importar Arquivo: Importa dados do arquivo binario
+//                           e retorna uma lista
 // ----------------------------------------------------------
 _node *ImportarArquivo( FILE *arq, LISTA_LIGADA *l, int *n) {
     ACTOR actor;
@@ -23,7 +23,6 @@ _node *ImportarArquivo( FILE *arq, LISTA_LIGADA *l, int *n) {
         while( arqsize ) {
             fread( &(actor), sizeof(ACTOR), 1, arq );
             fseek( arq, sizeof(ACTOR), SEEK_CUR );
-// printf("JooJ\n");
             Inserir( l , &actor );
             arqsize--;
         }
@@ -53,7 +52,9 @@ void ExportarArquivo( FILE *arq, LISTA_LIGADA *l, int n ) {
         }
     }
 }
-
+// ----------------------------------------------------------
+//  Funcao ImportarCSV: Importa dados para um arquivo .csv
+// ----------------------------------------------------------
 _node *ImportarCSV( FILE *arq , int *n , int sts ) {
     ACTOR actor;
     LISTA_LIGADA hero;
@@ -75,7 +76,9 @@ _node *ImportarCSV( FILE *arq , int *n , int sts ) {
     *n = naux;
     return hero.inicio;
 }
-
+// ----------------------------------------------------------
+//  Funcao ExportarCSV: Exporta dados para um arquivo .csv
+// ----------------------------------------------------------
 void ExportarCSV( FILE *arq , LISTA_LIGADA *l ) {
 
     _node *parq = l->inicio;

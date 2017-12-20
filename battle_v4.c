@@ -78,6 +78,8 @@ int main() {
     battle_enemy.inicio = NULL;
     // ------------------------------------------------------
 
+    system("clear");
+
 	//Tela de Inicio
 	while( opt != 1){
 		printf(R"EOF(
@@ -150,6 +152,7 @@ int main() {
     // ------------------------------------------------------
 
     while(opt != 0) {
+       printf("--------------------------------------------");
 	   printf("\nMenu de opções:\n");
 	   printf("1 - Inserir um Herói/Inimigo\n");
 	   printf("2 - Procurar por um Herói/Inimigo\n");
@@ -160,10 +163,12 @@ int main() {
 	   printf("7 - Importar uma das listas em CSV\n");
 	   printf("8 - Exportar uma das listas em CSV\n");
 	   printf("0 - Sair\n");
+       printf("--------------------------------------------\n");
 	   scanf("%d",&opt);
        switch(opt) {
 
           case INSERIR_HERO_ENEMY:
+            system("clear");
             printf("\nO que você deseja inserir?\n1 - Herói\t 2 - Inimigo\n");
             scanf("%d", &aux);
             aux--;
@@ -219,6 +224,7 @@ int main() {
           break;
 
           case PROCURAR:
+            system("clear");
 			printf("\nDe que lista você deseja procurar?\n1 - Lista de Heróis\t2 - Lista de Inimigos\n");
             scanf("%d", &type);
             type--;
@@ -244,6 +250,7 @@ int main() {
 		    break;
 
           case REMOVER:
+            system("clear");
 			printf("\nDe que lista você deseja remover?\n1 - Lista de Heróis\t2 - Lista de Inimigos\n");
             scanf("%d", &type);
             type--;
@@ -269,9 +276,10 @@ int main() {
             break;
 
           case IMPRIMIR:
+            system("clear");
 			printf("\nQue lista você deseja imprimir?\n1 - Lista de Heróis\t2 - Lista de Inimigos\n3 - Lista de Heróis que vão à batalha\n4 - Lista de Inimigos que vão à batalha\n");
             type = 0;
-            while( 1 ){		//ISSO É FEIO NÃO FUNCIONA IMPLEMENTAR MAIS
+            while( 1 ){
 				scanf("%d", &type);
 				if( type == 1 || type == 2 || type == 3 || type == 4 )
 					break;
@@ -302,10 +310,12 @@ int main() {
           break;
 
           case INSERIR_HERO_ENEMY_BATTLE:
+            system("clear");
 			printf("\nQuem você deseja mandar para a batalha?\n1 - Herói\t2 - Inimigo\n");
 			scanf("%d", &type);
 			type--;
 			if( type ){
+                Imprimir( &enemy );
 				printf("\nInsira o nome do Inimigo que vai para a batalha:\n");
 				scanf("\n%400[^\n]", actor.nome);
 				auxiliar = FazerLista( &enemy, &battle_enemy, &actor );
@@ -318,7 +328,8 @@ int main() {
 					else
 						printf("\nInimigo repetido\n");
 			}else{
-				printf("\nInsira o nome do Herói que vai para a batalha:\n");
+                Imprimir( &hero );
+                printf("\nInsira o nome do Herói que vai para a batalha:\n");
 				scanf("\n%400[^\n]", actor.nome);
 				auxiliar = FazerLista( &hero, &battle_hero, &actor );
 					if( auxiliar == 1 ){
@@ -339,6 +350,7 @@ int main() {
 				if( ChecarLista( &battle_enemy ) != 1 ){
 					printf("\nLista de Inimigos vazia, por fazor insira pelo menos 1 Inimigo na lista\n");
 				}else{
+                    system("clear");
 					TurnMaker( &battle_hero, &battle_enemy, &battle_list);
 					Battle( &battle_list, &battle_hero, &battle_enemy, hero_battle_number, enemy_battle_number );
 					LiberarListaLigada( &battle_list );
@@ -349,6 +361,7 @@ int main() {
 		  break;
 
           case IMPORTARCSV:
+            system("clear");
             printf("\nImportar para qual lista?\n1 - Lista de Hérois\t2 - Lista de Inimigos\n");
             while ( 1 ){
 				scanf("%d", &type);
@@ -415,6 +428,7 @@ int main() {
           break;
 
           case EXPORTARCSV:
+            system("clear");
             printf("\nExportar para qual lista?\n1 - Lista de Hérois\t2 - Lista de Inimigos\n");
 
             char nomearq[MAX];
@@ -493,7 +507,7 @@ int main() {
     fclose(heroarq);
     fclose(enemyarq);
 
-    printf("Party inserida!\n");
+    printf("Obrigado por jogar!\n");
     return 0;
 }
 
@@ -680,6 +694,7 @@ void Battle( LISTA_LIGADA *battle_lista, LISTA_LIGADA *hero, LISTA_LIGADA *enemy
 					paux->actor.turndefend = 0;
 					atual_enemy = enemy->inicio;
 					scanf("%d", &action);
+                    system("clear");
 					switch( action ){
 						case 1:
 							printf("Quem você deseja atacar?\n0 - Voltar\n");
@@ -712,16 +727,22 @@ void Battle( LISTA_LIGADA *battle_lista, LISTA_LIGADA *hero, LISTA_LIGADA *enemy
 								sucess = AcertoFisico( atual_battle );
 								if( sucess ){						//checa se o atacante acerta
 									atual_enemy->actor.hp = atual_enemy->actor.hp - (atual_battle->actor.str+1)/2;
+                                    printf("--------------------------------------------\n");
 									printf("\n%s ataca, %s se defende e leva %d de dano!\n", atual_battle->actor.nome, atual_enemy->actor.nome, (atual_battle->actor.str+1)/2);
-								}else
+								}else {
+                                    printf("--------------------------------------------\n");
 									printf("\n%s ataca mas erra!\n", atual_battle->actor.nome);
+                                }
 							}else{
 								sucess = AcertoFisico( atual_battle );
 								if( sucess ){						//checa se o atacante acerta
 									atual_enemy->actor.hp = atual_enemy->actor.hp - atual_battle->actor.str;
+                                    printf("--------------------------------------------\n");
 									printf("\n%s ataca e %s leva %d de dano!\n", atual_battle->actor.nome, atual_enemy->actor.nome, atual_battle->actor.str);
-								}else
+								}else {
+                                    printf("--------------------------------------------\n");
 									printf("\n%s ataca mas erra!\n", atual_battle->actor.nome);
+                                }
 							}
 
 							if( atual_enemy->actor.hp <= 0 )		//checa se o alvo está morto ou não
@@ -760,10 +781,12 @@ void Battle( LISTA_LIGADA *battle_lista, LISTA_LIGADA *hero, LISTA_LIGADA *enemy
 							sucess = AcertoMagico( atual_battle );
 							if( sucess ){							//checa se o atacante acertou
 								atual_enemy->actor.hp = atual_enemy->actor.hp - atual_battle->actor.mag;
+                                printf("--------------------------------------------\n");
 								printf("\n%s ataca com magia e %s leva %d de dano!\n", atual_battle->actor.nome, atual_enemy->actor.nome, atual_battle->actor.mag);
-							}else
+							}else {
+                                printf("--------------------------------------------\n");
 								printf("\n%s ataca mas erra!\n", atual_battle->actor.nome);
-
+                            }
 							if( atual_enemy->actor.hp <= 0 )		//checa se o alvo está morto ou não
 								morte++;
 
@@ -771,7 +794,8 @@ void Battle( LISTA_LIGADA *battle_lista, LISTA_LIGADA *hero, LISTA_LIGADA *enemy
 						break;
 
 						case 3:										//caso o heroi escolha se defender
-							printf("\n%s se defende!\n", atual_battle->actor.nome);
+                            printf("--------------------------------------------\n");
+                            printf("\n%s esta se defendendo!\n", atual_battle->actor.nome);
 							paux = Procurar( hero, &atual_battle->actor );
 							paux->actor.turndefend = 1;
 
@@ -786,7 +810,8 @@ void Battle( LISTA_LIGADA *battle_lista, LISTA_LIGADA *hero, LISTA_LIGADA *enemy
 				flag = 0;
 
 				if( morte ){										//checar se algum inimigo morreu
-					printf("\n%s morreu!\n", atual_enemy->actor.nome);
+                    printf("--------------------------------------------\n");
+                    printf("\n%s morreu!\n", atual_enemy->actor.nome);
 					RemoverBattle( battle_lista, &atual_enemy->actor );
 					Remover( enemy, &atual_enemy->actor );
 					enemy_battle_num--;
@@ -804,7 +829,8 @@ void Battle( LISTA_LIGADA *battle_lista, LISTA_LIGADA *hero, LISTA_LIGADA *enemy
 
 						switch( action ){
 							case 1:
-								attack = 1 + rand() % hero_battle_num;
+                                printf("--------------------------------------------\n");
+                                attack = 1 + rand() % hero_battle_num;
 
 								if( attack == 0 )
 									break;
@@ -817,11 +843,12 @@ void Battle( LISTA_LIGADA *battle_lista, LISTA_LIGADA *hero, LISTA_LIGADA *enemy
 									sucess = AcertoFisico( atual_battle );
 									if( sucess ){					//checa se o atacante acertou
 										atual_hero->actor.hp = atual_hero->actor.hp - (atual_battle->actor.str+1)/2;
-										printf("\n%s ataca, %s se defende e leva %d de dano!\n", atual_battle->actor.nome, atual_hero->actor.nome, (atual_battle->actor.str+1)/2);
-									}else
+                                        printf("\n%s ataca, %s se defende e leva %d de dano!\n", atual_battle->actor.nome, atual_hero->actor.nome, (atual_battle->actor.str+1)/2);
+									}else {
 										printf("\n%s ataca mas erra!\n", atual_battle->actor.nome);
+                                    }
 								}else{
-									sucess = AcertoFisico( atual_battle );
+                                    sucess = AcertoFisico( atual_battle );
 									if( sucess ){					//checa se o atacente acertou
 										atual_hero->actor.hp = atual_hero->actor.hp - atual_battle->actor.str;
 										printf("\n%s ataca e %s leva %d de dano!\n", atual_battle->actor.nome, atual_hero->actor.nome, atual_battle->actor.str);
@@ -836,6 +863,7 @@ void Battle( LISTA_LIGADA *battle_lista, LISTA_LIGADA *hero, LISTA_LIGADA *enemy
 							break;
 
 							case 2:
+                                printf("--------------------------------------------\n");
 								attack = 1 + rand() % hero_battle_num;
 
 								if( attack == 0 )					//condição para voltar as ações
@@ -859,7 +887,8 @@ void Battle( LISTA_LIGADA *battle_lista, LISTA_LIGADA *hero, LISTA_LIGADA *enemy
 							break;
 
 							case 3:									//caso o inimigo escolha se defender
-								printf("\n%s se defende!\n", atual_battle->actor.nome);
+                                printf("--------------------------------------------\n");
+                                printf("\n%s se defende!\n", atual_battle->actor.nome);
 								paux = Procurar( enemy, &atual_battle->actor );
 								paux->actor.turndefend = 1;
 
@@ -880,11 +909,11 @@ void Battle( LISTA_LIGADA *battle_lista, LISTA_LIGADA *hero, LISTA_LIGADA *enemy
 				}
 			}
 			if( enemy_battle_num <= 0 ){
-				printf("\nParabens!\n Você derrotou todos os Inimigos!\n");
+				printf("\nParabens!\n Você derrotou todos os Inimigos!\n\n");
 				break;
 			}
 			if( hero_battle_num <= 0 ){
-				printf("\nDerrota!\n Todos os Hérois morreram\n");
+				printf("\nDerrota!\n Todos os Hérois morreram\n\n");
 				break;
 			}
 		}
@@ -950,12 +979,12 @@ void MostrarHP( LISTA_LIGADA *battle, LISTA_LIGADA *enemy, LISTA_LIGADA *hero ){
 
 		atual_battle = atual_battle->next;
 		}
-		printf("\nInimigos\n");
+		printf("\nInimigo\n");
 		printf("%d/%d - %s\n", atual_enemy_list->actor.hp, atual_battle->actor.hp, atual_enemy_list->actor.nome);
 		atual_enemy_list = atual_enemy_list->next;
 		atual_battle = battle->inicio;
 	}
-	printf("\n");
+    printf("\n--------------------------------------------\n");
 	while( atual_hero_list != NULL ){
 		while( 1 ){
 			if( strcmp( atual_hero_list->actor.nome, atual_battle->actor.nome) == 0 )
@@ -963,7 +992,7 @@ void MostrarHP( LISTA_LIGADA *battle, LISTA_LIGADA *enemy, LISTA_LIGADA *hero ){
 
 		atual_battle = atual_battle->next;
 		}
-		printf("\nHeróis\n");
+		printf("\nHerói\n");
 		printf("%d/%d - %s\n", atual_hero_list->actor.hp, atual_battle->actor.hp, atual_hero_list->actor.nome);
 		atual_hero_list = atual_hero_list->next;
 		atual_battle = battle->inicio;
@@ -1011,7 +1040,3 @@ int AcertoMagico( _node *atacante ){
 	else
 		return 0;
 }
-
-//int ChecarElemento( ACTOR *actor ){
-
-//}
