@@ -7,7 +7,7 @@
 
 _node *ImportarArquivo( FILE *arq, LISTA_LIGADA *l, int *n );
 void ExportarArquivo( FILE *arq, LISTA_LIGADA *l, int n );
-_node *ImportarCSV( FILE *arq , int *n );
+_node *ImportarCSV( FILE *arq , int *n , int sts);
 void ExportarCSV( FILE *arq , LISTA_LIGADA *l );
 
 #endif

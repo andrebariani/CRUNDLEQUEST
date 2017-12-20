@@ -4,7 +4,7 @@
 #define MAX 201
 
 typedef struct {
-    int hp, str, mag, def, res, spd, sts;
+    int hp, str, mag, def, acc, spd, sts;
     int turndefend;
     char nome[MAX];
 } ACTOR;
