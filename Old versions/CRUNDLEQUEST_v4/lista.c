@@ -3,14 +3,10 @@
 #include <string.h>
 
 #include "lista.h"
-// ----------------------------------------------------------
-/**
- * @brief Insere elemento na lista ligada.
- *
- * Recebe endereço da lista, endereço do elemento;
- * Retorna 1 em inserção bem-sucedida ou 0 em caso de nome repetido.
- */
-// ----------------------------------------------------------
+
+// insere o elemento no fianl da lista, retorna:
+//	0 o elemento for repetido
+//	1 se o elemento for inserido com sucesso
 int Inserir( LISTA_LIGADA *l, ACTOR *actor ) {
 
     if( l->inicio == NULL ) {
@@ -43,15 +39,9 @@ int Inserir( LISTA_LIGADA *l, ACTOR *actor ) {
         }
     }
 }
-// ----------------------------------------------------------
-/**
- * @brief Procura pela lista o nome de um elemento.
- *
- * Recebe endereço da lista, endereço do elemento;
- * Retorna endereço do elemento, ou nulo se não foi encontrado.
- */
-// ----------------------------------------------------------
 
+// imprime na tela os RAs de todos os alunos com o nome procurado, ou imprime INEXISTENTE
+// Retorna o ponteriro do nome procurado se encontrado, ou NULL se inexistente ou não encontrado,
 _node *Procurar( LISTA_LIGADA *l, ACTOR *actor ) {
 
     if( l->inicio == NULL )
@@ -68,15 +58,11 @@ _node *Procurar( LISTA_LIGADA *l, ACTOR *actor ) {
 
     return NULL;
 }
-// ----------------------------------------------------------
-/**
- * @brief Remove elemento da lista.
- *
- * Recebe endereço da lista, endereço do elemento;
- * Retorna 0 se lista for vazia ou o nome do elemento não foi encontrado,
- * ou retorna 1 se foi encontrado e removido.
- */
-// ----------------------------------------------------------
+
+//função que remove um elemento da lista com o nome listado, retorna:
+//	0 caso o elemento não existe
+//	1 caso o elemnto foi removido com sucesso
+// int Remover( actor ** l, char NOME[] ) {
 int Remover( LISTA_LIGADA *l, ACTOR *actor ) {
 
     if(l->inicio == NULL)
@@ -113,13 +99,7 @@ int Remover( LISTA_LIGADA *l, ACTOR *actor ) {
         }
     return 0;
 }
-// ----------------------------------------------------------
-/**
- * @brief Libera todos os elementos da lista.
- *
- * Recebe endereço da lista.
- */
-// ----------------------------------------------------------
+
 void LiberarLista( LISTA_LIGADA *primeiro){//limpa a lista, deixando o espaço de memória que ela ocupava vazio
     primeiro->inicio = NULL;
 }

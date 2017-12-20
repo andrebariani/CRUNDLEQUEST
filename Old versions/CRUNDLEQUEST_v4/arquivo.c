@@ -6,13 +6,9 @@
 #include "lista.h"
 
 // ----------------------------------------------------------
-/**
- * @brief Importa dados de um arquivo binário
- *
- * Recebe endereço de arquivo, endereço de lista, endereço do número de elementos;
- * Retorna o endereço da nova lista ou NULL em caso de arquivo vazio.
- */
- // ----------------------------------------------------------
+//  Funcao Importar Arquivo: Importa dados do arquivo binario
+//                           e retorna uma lista
+// ----------------------------------------------------------
 _node *ImportarArquivo( FILE *arq, LISTA_LIGADA *l, int *n) {
     ACTOR actor;
     int arqsize;
@@ -35,11 +31,8 @@ _node *ImportarArquivo( FILE *arq, LISTA_LIGADA *l, int *n) {
     return NULL;
 }
 // ----------------------------------------------------------
-/**
- * @brief Exporta dados para um arquivo binário
- *
- * Recebe endereço de arquivo, endereço de lista, número de elementos.
- */
+//  Funcao Exportar Arquivo: Exporta dados para arquivo
+//                           binario
 // ----------------------------------------------------------
 void ExportarArquivo( FILE *arq, LISTA_LIGADA *l, int n ) {
 
@@ -60,12 +53,7 @@ void ExportarArquivo( FILE *arq, LISTA_LIGADA *l, int n ) {
     }
 }
 // ----------------------------------------------------------
-/**
- * @brief Importa dados de um arquivo .csv
- *
- * Recebe endereço de arquivo, endereço do número de elementos, tipo de elemento;
- * Retorna o endereço da nova lista ou NULL em caso de arquivo vazio.
- */
+//  Funcao ImportarCSV: Importa dados para um arquivo .csv
 // ----------------------------------------------------------
 _node *ImportarCSV( FILE *arq , int *n , int sts ) {
     ACTOR actor;
@@ -89,11 +77,7 @@ _node *ImportarCSV( FILE *arq , int *n , int sts ) {
     return hero.inicio;
 }
 // ----------------------------------------------------------
-/**
- * @brief Exporta dados de um arquivo .csv
- *
- * Recebe endereço de arquivo, endereço da lista.
- */
+//  Funcao ExportarCSV: Exporta dados para um arquivo .csv
 // ----------------------------------------------------------
 void ExportarCSV( FILE *arq , LISTA_LIGADA *l ) {
 
